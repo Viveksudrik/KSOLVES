@@ -214,5 +214,4 @@ Cleaned terminal flow:
 ```
 
 ## 🎥 Demo
-[Watch the Demo Video]
-(https://drive.google.com/file/d/1YWUjX9EQLhGLU8E-l063ThwGBhVd3h0Q/view?usp=sharing)
+[Watch the Demo Video](https://drive.google.com/file/d/1YWUjX9EQLhGLU8E-l063ThwGBhVd3h0Q/view?usp=sharing)
