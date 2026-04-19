@@ -4,6 +4,13 @@ An autonomous support agent that resolves repetitive customer tickets end-to-end
 
 **Hackathon:** Ksolves Agentic AI Hackathon 2026
 
+## ✅ Submission Deliverables
+
+- `README.md` (this file): setup, run instructions, and stack details.
+- `architecture.png`: 1-page agent loop + tooling design diagram.
+- `failure_modes.md`: documented failure scenarios and handling strategy.
+- `audit_log.json`: generated demo-run audit trace for all 20 tickets.
+
 ## 🎯 Problem Statement
 
 - ShopWave receives hundreds of support tickets daily, all routed to human agents.
@@ -77,7 +84,7 @@ The system follows a strict 5-step pipeline:
 
 | Layer | Technology |
 | --- | --- |
-| LLM | Groq API (llama-3.1-8b-instant) |
+| LLM | Groq API (`GROQ_MODEL`, default: `llama-3.3-70b-versatile`) |
 | Agent Framework | Custom ReAct loop (no LangChain) |
 | Backend | Node.js + Express |
 | Frontend | React + Vite |
@@ -91,7 +98,7 @@ The system follows a strict 5-step pipeline:
 | Total Tickets | 20 |
 | Autonomously Resolved | 15 (75%) |
 | Escalated to Human | 3 (15%) |
-| Pending Info | 2 (10%) |
+| Error (tool schema/API) | 2 (10%) |
 | Fraud Cases Caught | 1 |
 | Policy Exceptions Applied | 2 |
 
@@ -104,15 +111,34 @@ The system follows a strict 5-step pipeline:
 - **TKT-018:** Customer falsely claiming premium tier → tier mismatch flagged, declined.
 - **TKT-020:** Completely ambiguous ticket → clarifying questions sent, no assumptions made.
 
-## 🚀 Quick Start
+## 🚀 Setup Instructions
 
 ```bash
 git clone <repo>
+cd KSOLVES
 npm install
+cd dashboard && npm install && cd ..
 cp .env.example .env
 # Add GROQ_API_KEY to .env
-node index.js          # Process all 20 tickets
-npm run dashboard      # Open dashboard at localhost:5173
+```
+
+## ▶️ How to Run the Agent
+
+```bash
+# Process all 20 tickets in CLI mode
+node index.js
+
+# Run a single ticket
+node index.js --ticket TKT-001
+
+# Run built-in edge-case test suite
+node index.js --test
+
+# Start API server mode (for dashboard/live SSE run)
+node index.js --server
+
+# Start React dashboard (opens Vite dev server)
+npm run dashboard
 ```
 
 ## 📁 Project Structure
@@ -122,6 +148,9 @@ npm run dashboard      # Open dashboard at localhost:5173
 ├── index.js                    # Main entry: CLI mode + Express API server mode
 ├── package.json                # Root scripts and backend dependencies
 ├── .env.example                # Environment template (GROQ_API_KEY, optional overrides)
+├── architecture.png            # 1-page agent loop + tool design diagram
+├── failure_modes.md            # Failure-mode documentation and handling
+├── audit_log.json              # Consolidated audit trace across all 20 tickets
 ├── data/
 │   ├── tickets.json            # 20 mock support tickets used as input
 │   ├── customers.json          # Customer records (tier, notes, history)
